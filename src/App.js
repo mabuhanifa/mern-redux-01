@@ -1,18 +1,22 @@
-import { Container } from "react-bootstrap";
+import { Route, Routes } from "react-router-dom";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import HomeScreen from "./screens/HomeScreen";
+import ProductScreen from "./screens/ProductScreen";
 
 function App() {
   return (
     <>
       <Header />
-      <Container>
-        <main className="py-3">
-      <HomeScreen/>
+      <Routes>
+        <Route path="/" element={<HomeScreen />} />
+        <Route path="/product/:id" element={<ProductScreen />} />
+      </Routes>
+
+      <main className="py-3">
       </main>
-      </Container>
-      <Footer/>
+
+      <Footer />
     </>
   );
 }
