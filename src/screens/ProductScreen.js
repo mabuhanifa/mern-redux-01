@@ -1,4 +1,4 @@
-import { Card, Col, Container, Image, ListGroup, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Image, ListGroup, Row } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Rating from "../components/Rating";
 import products from "../products";
@@ -56,12 +56,19 @@ const ProductScreen  = () => {
                             <ListGroup.Item>
                             <Row>
                                 <Col>
-                                Price:
+                                Status:
                                 </Col>
                                 <Col>
-                                <strong>{product.price }</strong>
+                                {product.countInStock > 0 ? "In Stock" : "Out of Stock"}
                                 </Col>
                             </Row>
+                            </ListGroup.Item>
+                            <ListGroup.Item>
+                                <Row >
+                                    <Col >
+                                    <Button className="btn btn-block w-100" type='button' disabled={product.countInStock === 0 }> Add To Cart</Button>
+                                    </Col>
+                                </Row>
                             </ListGroup.Item>
                         </ListGroup>
                     </Card>
