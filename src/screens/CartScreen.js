@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { addToCart } from "../actions/cartActions";
+import { addToCart, removeFromCart } from "../actions/cartActions";
 import Message from "../components/Message";
 
 const CartScreen = () => {
@@ -29,7 +29,7 @@ const CartScreen = () => {
     }
   }, [dispatch, id, qty]);
   const removeFromCartHandler = (productId) => {
-    console.log("remove");
+    dispatch(removeFromCart(productId));
   };
   const checkoutHandler = () => {
     navigate("/signin?redirect=/checkout");
@@ -47,14 +47,14 @@ const CartScreen = () => {
             <ListGroup variant="flush">
               {cartItems.map((item) => (
                 <ListGroup.Item key={id}>
-                  <Row>
-                    <Col md={2}>
+                  <Row >
+                    <Col  md={2}>
                       <Image src={item.image} alt={item.name} fluid rounded />
                     </Col>
-                    <Col md={3}>
-                      <Link to={`/product/${id}`}>{item.name}</Link>
+                    <Col  md={3}>
+                      <Link className="text-decoration-none" to={`/product/${id}`}>{item.name}</Link>
                     </Col>
-                    <Col md={2}>{item.price}</Col>
+                    <Col  md={2}>{item.price}</Col>
                     <Col md={2}>
                       <Form.Control
                         as="select"
