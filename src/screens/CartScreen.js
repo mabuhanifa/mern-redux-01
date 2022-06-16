@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import {
-    Button,
-    Card,
-    Col,
-    Container,
-    Form,
-    Image,
-    ListGroup,
-    Row
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  Image,
+  ListGroup,
+  Row
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
@@ -32,7 +32,7 @@ const CartScreen = () => {
     dispatch(removeFromCart(productId));
   };
   const checkoutHandler = () => {
-    navigate("/signin?redirect=/checkout");
+    navigate("/login?redirect=shipping");
   }
   return (
     <Container className="mt-3">

@@ -9,6 +9,7 @@ import Message from "../components/Message";
 const ProfileScreen = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [display, setDisplay] = useState('d-none');
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,7 +24,6 @@ const ProfileScreen = () => {
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
   const { success } = userUpdateProfile;
-  // const redirect = location.search ? location.search.split("=")[1] : "/";
   useEffect(() => {
     if (!userInfo) {
       navigate("/login");
@@ -38,6 +38,7 @@ const ProfileScreen = () => {
   }, [dispatch, navigate, userInfo, user]);
 
   const submitHandler = (e) => {
+    setDisplay("d-block");
     e.preventDefault();
     if (password !== confirmPassword) {
       return setMessage("Passwords do not match");
@@ -45,22 +46,19 @@ const ProfileScreen = () => {
       dispatch(updateUserProfile({ id: user._id, name, email, password }));
     }
   };
+  
   return (
     <Container className="m-5">
       <Row>
         <Col md={3}>
           <h2>User Profile</h2>
           {message && <Message variant="danger">{message}</Message>}
-          {success && (
-            <Message variant="success">
-              Profile updated successfully {success}
-            </Message>
-          )}
-          {loading ? (
-            <Loader />
-          ) : error ? (
-            <Message variant="danger">{error}</Message>
-          ) : (
+          {error && <Message variant="danger">{error}</Message>}
+          
+          <div className={display}>
+          <Message variant='success'>Profile Updated</Message>
+          </div>
+          {loading && <Loader />}
             <Form onSubmit={submitHandler}>
               <Form.Group controlId="name">
                 <Form.Label className="my-1">Name</Form.Label>
@@ -110,7 +108,6 @@ const ProfileScreen = () => {
                 Update
               </Button>
             </Form>
-          )}
         </Col>
         <Col md={9}>
           <h2>My Orders </h2>
