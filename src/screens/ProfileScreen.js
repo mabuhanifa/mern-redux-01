@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getUserDetails } from "../actions/userActions";
-import FormContainer from "../components/FormContainer";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 
@@ -16,24 +15,23 @@ const ProfileScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
-  const userDetails = useSelector((state) => state.userRegister);
+  const userDetails = useSelector((state) => state.userDetails);
   const { loading, error, user } = userDetails;
-  const userLogin = useSelector((state) => state.userRegister);
+  const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-  const redirect = location.search ? location.search.split("=")[1] : "/";
-
+  // const redirect = location.search ? location.search.split("=")[1] : "/";
   useEffect(() => {
     if (!userInfo) {
       navigate("/login");
     } else {
-      if (!user.name) {
+      if (!user?.name) {
         dispatch(getUserDetails("profile"));
       } else {
         setName(user.name);
         setEmail(user.email);
       }
     }
-  }, [navigate, userInfo, user, dispatch]);
+  }, [dispatch, navigate, userInfo, user]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -41,69 +39,74 @@ const ProfileScreen = () => {
       return setMessage("Passwords do not match");
     } else {
       //
-      
     }
   };
   return (
-    <FormContainer>
-      <h1 className="mt-5">Sign Up</h1>
-      {message && <Message variant="danger">{message}</Message>}
-      {error && <Message variant="danger">{error}</Message>}
-      {loading && <Loader variant="info">Loading...</Loader>}
-      <Form onSubmit={submitHandler}>
-        <Form.Group controlId="email">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            className="border border-secondary"
-            type="name"
-            placeholder="Enter Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group controlId="email">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            className="border border-secondary"
-            type="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group controlId="password">
-          <Form.Label className="my-2  ">Password</Form.Label>
-          <Form.Control
-            className="border border-secondary"
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group controlId="confirmPassword">
-          <Form.Label className="my-2  ">Confirm Password</Form.Label>
-          <Form.Control
-            className="border border-secondary"
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </Form.Group>
-        <Button className="mt-3" type="submit">
-          Register
-        </Button>
-      </Form>
-      <Row className="py-3">
-        <Col>
-          Have an Account?{" "}
-          <Link to={redirect ? `/login?redirect=${redirect}` : "/login"}>
-            Login
-          </Link>
+    <Container>
+      <Row>
+        <Col md={3}>
+          <h2>User Profile</h2>
+          {message && <Message variant="danger">{message}</Message>}
+          {}
+
+          {loading ? (
+            <Loader />
+          ) : error ? (
+            <Message variant="danger">{error}</Message>
+          ) : (
+            <Form onSubmit={submitHandler}>
+              <Form.Group controlId="name">
+                <Form.Label className="my-1">Name</Form.Label>
+                <Form.Control
+                  className="border border-secondary my-1"
+                  type="name"
+                  placeholder="Enter name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+
+              <Form.Group controlId="email">
+                <Form.Label className="my-1">Email Address</Form.Label>
+                <Form.Control
+                  className="border border-secondary my-1" 
+                  type="email"
+                  placeholder="Enter email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+
+              <Form.Group controlId="password">
+                <Form.Label className="my-1">Password</Form.Label>
+                <Form.Control
+                  className="border border-secondary my-1"
+                  type="password"
+                  placeholder="Enter password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+
+              <Form.Group controlId="confirmPassword">
+                <Form.Label className="my-1">Confirm Password</Form.Label>
+                <Form.Control
+                  className="border border-secondary my-1"
+                  type="password"
+                  placeholder="Confirm password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+
+              <Button className="my-2 w-100" type="submit" variant="primary">
+                Update
+              </Button>
+            </Form>
+          )}
         </Col>
       </Row>
-    </FormContainer>
+    </Container>
   );
 };
 
