@@ -3,6 +3,7 @@ import { Button, Container, Form } from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
 
 const ShippingScreen = () => {
+  const cart = useSelector((state) => state.cart);
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
@@ -10,7 +11,7 @@ const ShippingScreen = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     console.log(address, city, postalCode, country);
-    }
+  };
   return (
     <Container>
       <FormContainer>
@@ -63,10 +64,9 @@ const ShippingScreen = () => {
           />
         </Form.Group>
 
-        <Button type='submit'
-            className="my-2 "
-            variant="primary"
-        >Continue</Button>
+        <Button type="submit" className="my-2 " variant="primary">
+          Continue
+        </Button>
       </Form>
     </Container>
   );
