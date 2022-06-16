@@ -32,7 +32,7 @@ const CartScreen = () => {
     dispatch(removeFromCart(productId));
   };
   const checkoutHandler = () => {
-    navigate("/login?redirect=shipping");
+    navigate("/shipping");
   }
   return (
     <Container className="mt-3">
