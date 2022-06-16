@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import {
-    Button,
-    Card,
-    Col,
-    Container,
-    Form,
-    Image,
-    ListGroup,
-    Row,
-    Spinner
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  Image,
+  ListGroup,
+  Row,
+  Spinner
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -90,6 +90,7 @@ const ProductScreen = () => {
                       <Col className="my-auto">Quantity :</Col>
                       <Col>
                         <Form.Control
+                        className="border border-secondary"
                           as="select"
                           value={qty}
                           onChange={(e) => setQty(e.target.value)}
