@@ -42,7 +42,7 @@ const ProfileScreen = () => {
     }
   };
   return (
-    <Container>
+    <Container className="m-5">
       <Row>
         <Col md={3}>
           <h2>User Profile</h2>
@@ -104,6 +104,9 @@ const ProfileScreen = () => {
               </Button>
             </Form>
           )}
+        </Col>
+        <Col md={9}>
+          <h2>My Orders </h2>
         </Col>
       </Row>
     </Container>
