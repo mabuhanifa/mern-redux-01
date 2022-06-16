@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getUserDetails } from "../actions/userActions";
+import { getUserDetails, updateUserProfile } from "../actions/userActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 
@@ -17,8 +17,12 @@ const ProfileScreen = () => {
   const dispatch = useDispatch();
   const userDetails = useSelector((state) => state.userDetails);
   const { loading, error, user } = userDetails;
+
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
+  const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+  const { success } = userUpdateProfile;
   // const redirect = location.search ? location.search.split("=")[1] : "/";
   useEffect(() => {
     if (!userInfo) {
@@ -38,7 +42,7 @@ const ProfileScreen = () => {
     if (password !== confirmPassword) {
       return setMessage("Passwords do not match");
     } else {
-      //
+      dispatch(updateUserProfile({ id: user._id, name, email, password }));
     }
   };
   return (
@@ -47,8 +51,11 @@ const ProfileScreen = () => {
         <Col md={3}>
           <h2>User Profile</h2>
           {message && <Message variant="danger">{message}</Message>}
-          {}
-
+          {success && (
+            <Message variant="success">
+              Profile updated successfully {success}
+            </Message>
+          )}
           {loading ? (
             <Loader />
           ) : error ? (
@@ -69,7 +76,7 @@ const ProfileScreen = () => {
               <Form.Group controlId="email">
                 <Form.Label className="my-1">Email Address</Form.Label>
                 <Form.Control
-                  className="border border-secondary my-1" 
+                  className="border border-secondary my-1"
                   type="email"
                   placeholder="Enter email"
                   value={email}
