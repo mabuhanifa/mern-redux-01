@@ -1,4 +1,12 @@
-import { Col, Container, Image, ListGroup, Row } from "react-bootstrap";
+import {
+    Button,
+    Card,
+    Col,
+    Container,
+    Image,
+    ListGroup,
+    Row
+} from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import CheckoutSteps from "../components/CheckoutSteps";
@@ -6,6 +14,11 @@ import Message from "../components/Message";
 
 const PlaceOrderScreen = () => {
   const cart = useSelector((state) => state.cart);
+  cart.itemsPrice = cart.cartItems.reduce((acc, item) => acc + item.price * item.qty,  0);
+  
+  const placeOrderHandler = () => {
+    console.log("object");
+  };
   return (
     <Container>
       <CheckoutSteps step1 step2 step3 step4 />
@@ -44,12 +57,15 @@ const PlaceOrderScreen = () => {
                           />
                         </Col>
                         <Col>
-                          <Link className="text-decoration-none" to={`/product/${item.product}`}>
+                          <Link
+                            className="text-decoration-none"
+                            to={`/product/${item.product}`}
+                          >
                             {item.name}
                           </Link>
                         </Col>
                         <Col md={4}>
-                            {item.qty} x ${item.price} = ${item.qty * item.price}
+                          {item.qty} x ${item.price} = ${item.qty * item.price}
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -58,6 +74,49 @@ const PlaceOrderScreen = () => {
               )}
             </ListGroup.Item>
           </ListGroup>
+        </Col>
+        <Col md={4}>
+          <Card>
+            <ListGroup variant="flush">
+              <ListGroup.Item>
+                <h2>Order Summery</h2>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Items</Col>
+                  <Col>${cart.itemsPrice}</Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Shipping</Col>
+                  <Col>${cart.shippingPrice}</Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Tax</Col>
+                  <Col>${cart.taxPrice}</Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Total</Col>
+                  <Col>${cart.totalPrice}</Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Button
+                  type="button"
+                  className="btn btn-primary w-100"
+                  disabled={cart.cartItems === 0}
+                  onClick={placeOrderHandler}
+                >
+                  Buy
+                </Button>
+              </ListGroup.Item>
+            </ListGroup>
+          </Card>
         </Col>
       </Row>
     </Container>
