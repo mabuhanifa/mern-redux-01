@@ -1,11 +1,11 @@
 import {
-    Button,
-    Card,
-    Col,
-    Container,
-    Image,
-    ListGroup,
-    Row
+  Button,
+  Card,
+  Col,
+  Container,
+  Image,
+  ListGroup,
+  Row
 } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -14,11 +14,28 @@ import Message from "../components/Message";
 
 const PlaceOrderScreen = () => {
   const cart = useSelector((state) => state.cart);
-  cart.itemsPrice = cart.cartItems.reduce((acc, item) => acc + item.price * item.qty,  0);
-  
+
+  const addDecimals = (num) => {
+    return (Math.round(num * 100) / 100).toFixed(2);
+  };
+
+  cart.itemsPrice = addDecimals(
+    cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+  );
+
+  cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 100);
+
+  cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)));
+
+  cart.totalPrice = (
+    Number(cart.itemsPrice) +
+    Number(cart.shippingPrice) +
+    Number(cart.taxPrice)
+  ).toFixed(2);
   const placeOrderHandler = () => {
     console.log("object");
   };
+
   return (
     <Container>
       <CheckoutSteps step1 step2 step3 step4 />
@@ -112,7 +129,7 @@ const PlaceOrderScreen = () => {
                   disabled={cart.cartItems === 0}
                   onClick={placeOrderHandler}
                 >
-                  Buy
+                  Place Order
                 </Button>
               </ListGroup.Item>
             </ListGroup>
