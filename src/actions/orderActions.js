@@ -4,6 +4,7 @@ import {
     ORDER_CREATE_REQUEST,
     ORDER_CREATE_SUCCESS
 } from "../constants/orderConstants";
+import { logout } from "./userActions";
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
     dispatch({
@@ -31,13 +32,19 @@ export const createOrder = (order) => async (dispatch, getState) => {
       type: ORDER_CREATE_SUCCESS,
       payload: data,
     });
+
+    
   } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
     dispatch({
       type: ORDER_CREATE_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+      payload: message,
     });
   }
 };
