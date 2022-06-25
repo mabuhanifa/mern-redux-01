@@ -1,6 +1,8 @@
-import { Col, Container, ListGroup, Row } from "react-bootstrap";
+import { Col, Container, Image, ListGroup, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import CheckoutSteps from "../components/CheckoutSteps";
+import Message from "../components/Message";
 
 const PlaceOrderScreen = () => {
   const cart = useSelector((state) => state.cart);
@@ -18,6 +20,42 @@ const PlaceOrderScreen = () => {
                 {cart.shippingAddress.postalCode},{" "}
                 {cart.shippingAddress.country}
               </p>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <h2>Payment Method</h2>
+              <strong>Method: </strong>
+              {cart?.paymentMethod}
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <h2>Order Items</h2>
+              {cart.cartItems.length === 0 ? (
+                <Message>Your Cart is empty </Message>
+              ) : (
+                <ListGroup variant="flush">
+                  {cart.cartItems.map((item, index) => (
+                    <ListGroup.Item key={index}>
+                      <Row>
+                        <Col md={1}>
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            fluid
+                            rounded
+                          />
+                        </Col>
+                        <Col>
+                          <Link className="text-decoration-none" to={`/product/${item.product}`}>
+                            {item.name}
+                          </Link>
+                        </Col>
+                        <Col md={4}>
+                            {item.qty} x ${item.price} = ${item.qty * item.price}
+                        </Col>
+                      </Row>
+                    </ListGroup.Item>
+                  ))}
+                </ListGroup>
+              )}
             </ListGroup.Item>
           </ListGroup>
         </Col>
