@@ -1,30 +1,29 @@
 import { useEffect } from "react";
 import { Card, Col, Container, Image, ListGroup, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getOrderDetails } from "../actions/orderActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 
 const OrderScreen = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { id } = useParams();
+
+  const orderDetails = useSelector((state) => state.orderDetails);
+  const { order, loading, error } = orderDetails;
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
   };
-
-  const orderDetails = useSelector((state) => state.orderDetails);
-
-  const { order, loading, error } = orderDetails;
+  if (!loading) {
+    order.itemsPrice = addDecimals(
+      order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+    );
+  }
 
   useEffect(() => {
     dispatch(getOrderDetails(id));
   }, [id, dispatch]);
-
-  const placeOrderHandler = () => {
-    dispatch();
-  };
 
   return loading ? (
     <Loader />
@@ -39,20 +38,38 @@ const OrderScreen = () => {
             <ListGroup.Item>
               <h2>Shipping</h2>
               <p>
+                <strong>Name : </strong> {order.user.name}
+              </p>
+              <p>
+                <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
+              </p>
+              <p>
                 <strong>Address</strong>
                 {order.shippingAddress.address}, {order.shippingAddress.city},{" "}
                 {order.shippingAddress.postalCode},{" "}
                 {order.shippingAddress.country}
               </p>
+              {order.isDelivered ? (
+                <Message variant="success"> Delivered on {order.deliveredAt}</Message>
+              ) : (
+                <Message variant="danger">Not Delivered</Message>
+              )}
             </ListGroup.Item>
             <ListGroup.Item>
               <h2>Payment Method</h2>
-              <strong>Method: </strong>
-              {order?.paymentMethod}
+              <p>
+                <strong>Method: </strong>
+                {order?.paymentMethod}
+              </p>
+              {order.isPaid ? (
+                <Message variant="success"> Paid on {order.paidAt}</Message>
+              ) : (
+                <Message variant="danger">Not paid</Message>
+              )}
             </ListGroup.Item>
             <ListGroup.Item>
               <h2>Order Items</h2>
-              {order.cartItems.length === 0 ? (
+              {order.orderItems.length === 0 ? (
                 <Message>Your Order is empty </Message>
               ) : (
                 <ListGroup variant="flush">

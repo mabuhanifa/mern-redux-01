@@ -1,6 +1,11 @@
+a {
+  text-decoration: none;
+}
+
 main {
   min-height: 80vh;
 }
+
 .rating span {
   margin: 0.1rem;
 }
@@ -8,10 +13,12 @@ main {
 h3 {
   padding: 1rem 0;
 }
+
 h1 {
   padding: 0.1rem;
   font-size: 1.8 rem;
 }
+
 h2 {
   font-size: 1.4 rem;
 }
