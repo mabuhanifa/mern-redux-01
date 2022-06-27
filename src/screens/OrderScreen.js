@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Card, Col, Container, Image, ListGroup, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
@@ -9,9 +10,14 @@ import Message from "../components/Message";
 const OrderScreen = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
+  const [sdkReady, setSdkReady] = useState(false);
 
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, loading, error } = orderDetails;
+
+  const orderPay = useSelector((state) => state.orderPay);
+  const { loading: loadingPay, success: successPay } = orderPay;
+
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
   };
@@ -22,8 +28,30 @@ const OrderScreen = () => {
   }
 
   useEffect(() => {
-    dispatch(getOrderDetails(id));
-  }, [id, dispatch]);
+    const addPayPalScript = async () => {
+      const { data: clientID } = await axios.get(
+        "http://localhost:5000/api/config/paypal"
+      );
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.source = `https://www.paypal.com/sdk/js?client-id=${clientID}`;
+      script.async = true;
+      script.onload = () => {
+        setSdkReady(true);
+      };
+
+      document.body.appendChild(script);
+    };
+    if (!order || successPay) {
+      dispatch(getOrderDetails(id));
+    } else if (!order.isPaid) {
+      if (window.paypal) {
+        addPayPalScript();
+      } else {
+        setSdkReady(true);
+      }
+    }
+  }, [id, dispatch, successPay, order]);
 
   return loading ? (
     <Loader />
@@ -44,13 +72,15 @@ const OrderScreen = () => {
                 <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
               </p>
               <p>
-                <strong>Address</strong>
+                <strong>Address : </strong>
                 {order.shippingAddress.address}, {order.shippingAddress.city},{" "}
                 {order.shippingAddress.postalCode},{" "}
                 {order.shippingAddress.country}
               </p>
               {order.isDelivered ? (
-                <Message variant="success"> Delivered on {order.deliveredAt}</Message>
+                <Message variant="success">
+                  Delivered on {order.deliveredAt}
+                </Message>
               ) : (
                 <Message variant="danger">Not Delivered</Message>
               )}
