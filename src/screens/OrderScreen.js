@@ -31,20 +31,21 @@ const OrderScreen = () => {
 
   useEffect(() => {
     const addPayPalScript = async () => {
-      const { data: clientID } = await axios.get(
+      const { data: clientId } = await axios.get(
         "http://localhost:5000/api/config/paypal"
       );
       const script = document.createElement("script");
       script.type = "text/javascript";
-      script.source = `https://www.paypal.com/sdk/js?client-id=${clientID}`;
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
       script.async = true;
       script.onload = () => {
         setSdkReady(true);
       };
       document.body.appendChild(script);
     };
+
     if (!order || successPay) {
-      dispatch({type: ORDER_PAY_RESET});
+      dispatch({ type: ORDER_PAY_RESET });
       dispatch(getOrderDetails(id));
     } else if (!order.isPaid) {
       if (window.paypal) {
