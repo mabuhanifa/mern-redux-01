@@ -90,7 +90,7 @@ const ProductScreen = () => {
                       <Col className="my-auto">Quantity :</Col>
                       <Col>
                         <Form.Control
-                        className="border border-secondary"
+                        className="border border-secondary form-select"
                           as="select"
                           value={qty}
                           onChange={(e) => setQty(e.target.value)}

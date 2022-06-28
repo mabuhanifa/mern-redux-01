@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { listMyOrders } from "../actions/orderActions";
 import { getUserDetails, updateUserProfile } from "../actions/userActions";
 import Loader from "../components/Loader";
@@ -10,7 +10,6 @@ import Message from "../components/Message";
 
 const ProfileScreen = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [display, setDisplay] = useState("d-none");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -141,7 +140,7 @@ const ProfileScreen = () => {
                   <td>{order._id}</td>
                   <td>{order.createdAt.substring(0, 10)}</td>
                   <td>{order.totalPrice}</td>
-                  <td className={order.isPaid ? "text-success" : ""}>
+                  <td className={order.isPaid ? "badge rounded-pill bg-success mt-1 text-dark" : ""}>
                     <strong>
                     {order.isPaid ? (
                       order.paidAt.substring(0, 10)
