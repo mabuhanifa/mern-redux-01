@@ -70,7 +70,7 @@ const ProfileScreen = () => {
             <Form.Group controlId="name">
               <Form.Label className="my-1">Name</Form.Label>
               <Form.Control
-                className="border border-secondary my-1"
+                className="border border-secondary my-1 i_n"
                 type="name"
                 placeholder="Enter name"
                 value={name}
