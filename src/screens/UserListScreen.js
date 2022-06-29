@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { Button, Container, Table } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { listUsers } from "../actions/userActions";
+import { deleteUser, listUsers } from "../actions/userActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 
@@ -17,19 +17,25 @@ const UserListScreen = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  const userDelete = useSelector((state) => state.userDelete);
+  const { success: successDelete } = userDelete;
+
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       dispatch(listUsers());
     } else {
       navigate("/login");
     }
-  }, [dispatch,navigate, userInfo]);
+  }, [dispatch, navigate, successDelete, userInfo]);
 
-  const deleteHandler = () => {
-    console.log();
+  const deleteHandler = (id) => {
+    if (window.confirm("Are you sure")) {
+      dispatch(deleteUser(id));
+    }
   };
+
   return (
-    <Container>
+    <>
       <h1>Users</h1>
       {loading ? (
         <Loader />
@@ -80,7 +86,7 @@ const UserListScreen = () => {
           </tbody>
         </Table>
       )}
-    </Container>
+    </>
   );
 };
 
