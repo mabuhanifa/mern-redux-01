@@ -28,7 +28,7 @@ const ProductListScreen = () => {
   const { userInfo } = userLogin;
 
   useEffect(() => {
-    if (userInfo || userInfo.isAdmin) {
+    if (userInfo && userInfo.isAdmin) {
       dispatch(listProducts());
     } else {
       navigate("/login");
@@ -37,7 +37,7 @@ const ProductListScreen = () => {
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure")) {
-      deleteProduct(id);
+      dispatch(deleteProduct(id));
     }
   };
 
