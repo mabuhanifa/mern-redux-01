@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Button, Table } from "react-bootstrap";
+import { Button, Container, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -35,7 +35,7 @@ const UserListScreen = () => {
   };
 
   return (
-    <>
+    <Container>
       <h1>Users</h1>
       {loading ? (
         <Loader />
@@ -86,7 +86,7 @@ const UserListScreen = () => {
           </tbody>
         </Table>
       )}
-    </>
+    </Container>
   );
 };
 
