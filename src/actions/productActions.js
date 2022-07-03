@@ -192,9 +192,11 @@ export const createProductReview =
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-
-      await axios.post(`/api/products/${productId}/reviews`, review, config);
-
+      await axios.post(
+        `http://localhost:5000/api/products/${productId}/reviews`,
+        review,
+        config
+      );
       dispatch({
         type: PRODUCT_CREATE_REVIEW_SUCCESS,
       });
