@@ -19,7 +19,6 @@ const ProductListScreen = () => {
 
   const productList = useSelector((state) => state.productList);
   const { loading, error, products } = productList;
-  console.log(products);
 
   const productDelete = useSelector((state) => state.productDelete);
   const {

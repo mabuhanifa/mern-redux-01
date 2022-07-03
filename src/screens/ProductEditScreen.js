@@ -74,6 +74,7 @@ const ProductEditScreen = () => {
 
       setImage(data);
       setUploading(false);
+      console.log(image);
     } catch (error) {
       console.error(error);
       setUploading(false);
@@ -142,6 +143,7 @@ const ProductEditScreen = () => {
               <Form.Label>Choose File</Form.Label>
               <Form.Control
                 type="file"
+                controlId = "image-file"
                 id="image-file"
                 label="Choose File"
                 custom
