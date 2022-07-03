@@ -6,6 +6,7 @@ import { listProducts } from "../actions/productActions";
 import Message from "../components/Message";
 import Paginate from "../components/Paginate";
 import Product from "../components/Product";
+import ProductCarousel from "../components/ProductCarousel";
 
 const HomeScreen = () => {
   const { pageNumber } = useParams() || 1;
@@ -22,6 +23,7 @@ const HomeScreen = () => {
   }, [dispatch, keyword, pageNumber]);
   return (
     <Container>
+      {!keyword && <ProductCarousel />}
       <h1 className="mt-3">Latest Products</h1>
 
       {loading ? (
@@ -31,7 +33,7 @@ const HomeScreen = () => {
       ) : (
         <>
           <Row>
-            {products.products?.map((product) => (
+            {products?.map((product) => (
               <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
                 <Product product={product} />
               </Col>
