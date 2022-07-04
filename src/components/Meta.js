@@ -3,9 +3,9 @@ import { Helmet } from "react-helmet";
 const Meta = ({ title, description, keywords }) => {
   return (
     <Helmet>
-      <title>{}</title>
-      <meta name="description" content="description" />
-      <meta name="keyword" content="description" />
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      <meta name="keyword" content={keywords} />
     </Helmet>
   );
 };
