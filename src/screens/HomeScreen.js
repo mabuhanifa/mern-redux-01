@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Col, Container, Row, Spinner } from "react-bootstrap";
+import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { listProducts } from "../actions/productActions";
@@ -23,6 +24,11 @@ const HomeScreen = () => {
   }, [dispatch, keyword, pageNumber]);
   return (
     <Container>
+      <Helmet>
+        <title>Welcome to Gadget Square</title>
+        <meta name="description" content="We sell the best tech product"/>
+        <meta name="keyword" content="electronics, buy electronics"/>
+      </Helmet>
       {!keyword && <ProductCarousel />}
       <h1 className="mt-3">Latest Products</h1>
 
