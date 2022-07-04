@@ -22,7 +22,7 @@ const SearchBox = () => {
           name='q'
           onChange={(e) => setKeyword(e.target.value)}
           placeholder='Search Products...'
-          className="me-2 w-25"
+          className="me-2 w-50 "
           aria-label="Search"
         />
         <Button type='submit' variant='outline-success' className='p-2'>Search</Button>
