@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Button, Col, Container, Row, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   createProduct,
   deleteProduct,
@@ -10,9 +10,12 @@ import {
 } from "../actions/productActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import Paginate from "../components/Paginate";
 import { PRODUCT_CREATE_RESET } from "../constants/productConstants";
 
 const ProductListScreen = () => {
+  const { page } = useParams();
+  const { keyword } = useParams();
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -125,6 +128,11 @@ const ProductListScreen = () => {
               ))}
             </tbody>
           </Table>
+          <Paginate
+            pages={pages}
+            page={page}
+            keyword={keyword ? keyword : ""}
+          />
         </>
       )}
     </Container>
